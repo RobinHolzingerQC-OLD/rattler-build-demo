@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm", "wheel"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+
+[project]
+name = "my_package"
+dynamic = ["version"]
+readme = "README.md"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["my_package*"]
+namespaces = false

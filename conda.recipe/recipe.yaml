@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
+context:
+  name: rattler-build-demo
+  version: 1
+  build_variant: ${{ 'unix' if(unix) else 'win' }}
+  build_number: 0
+
+source:
+  path: ../
+
+outputs:
+  - package:
+      name: ${{ name }}
+      version: ${{ version }}
+    build:
+      number: ${{ build_number }}
+      noarch: python
+      string: ${{ build_variant }}_${{ hash }}_${{ build_number }}
+      script:
+        - python -m pip install . --no-deps --ignore-installed -vv --no-build-isolation --disable-pip-version-check
+    requirements:
+      host:
+        - python >=3.11
+        - pip
+        - setuptools-scm
+      run:
+        - ${{ "__unix" if unix }}  # for unixodbc in the sql package
+        - ${{ "__win" if win }}
+        - python >=3.11
+
+  - package:
+      name: ${{ name }}-subpackage
+      version: ${{ version }}
+    build:
+      number: ${{ build_number }}
+      noarch: python
+      string: ${{ build_variant }}_${{ hash }}_${{ build_number }}
+    requirements:
+      run:
+        - ${{ pin_subpackage('rattler-build-demo', exact=True) }}
+        - ${{ "pydantic <2.3.12" if unix }}  # avoid multiprocessing bug in 2.3.12
