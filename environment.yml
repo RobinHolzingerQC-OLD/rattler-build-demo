@@ -1,0 +1,15 @@
+name: rattler-build-demo
+channels:
+  - qc-barmer
+  - conda-forge
+  - nodefaults
+dependencies:
+  # Git
+  - pre-commit
+  # Python
+  - pip
+  - python >=3.11
+  - setuptools-scm
+  - setuptools >=61 # Adds support for pyproject.toml package declaration.
+  # Development
+  - rattler-build >=0.8.3
